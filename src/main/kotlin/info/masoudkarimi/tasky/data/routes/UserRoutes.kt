@@ -23,7 +23,17 @@ fun Route.userRouting() {
          * Display specific user
          * */
         get("{id}") {
+            val id = call.parameters["id"] ?: return@get call.respondText(
+                "Missing or malformed id",
+                status = HttpStatusCode.BadRequest
+            )
 
+            val user = userStorage.find { it.id == id } ?: return@get call.respondText(
+                "No user with id $id",
+                status = HttpStatusCode.NotFound
+            )
+
+            call.respond(user)
         }
 
         post {
