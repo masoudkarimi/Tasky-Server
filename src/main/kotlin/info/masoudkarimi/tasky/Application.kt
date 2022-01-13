@@ -1,8 +1,8 @@
-package info.masoudkarimi
+package info.masoudkarimi.tasky
 
-import io.ktor.server.netty.*
-import info.masoudkarimi.plugins.*
+import info.masoudkarimi.tasky.plugins.configureRouting
 import io.ktor.application.*
+import io.ktor.server.netty.*
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 

@@ -1,4 +1,4 @@
-package info.masoudkarimi.plugins
+package info.masoudkarimi.tasky.plugins
 
 import io.ktor.application.*
 import io.ktor.response.*
