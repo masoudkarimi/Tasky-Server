@@ -1,8 +1,10 @@
 package info.masoudkarimi.tasky.data.routes
 
+import info.masoudkarimi.tasky.data.models.User
 import info.masoudkarimi.tasky.data.models.userStorage
 import io.ktor.application.*
 import io.ktor.http.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
@@ -36,12 +38,25 @@ fun Route.userRouting() {
             call.respond(user)
         }
 
+        /**
+         * Create new user and return it as response
+         * */
         post {
-
+            val user = call.receive<User>().copy(id = userStorage.lastIndex.inc().toString())
+            userStorage.add(user)
+            call.respond(status = HttpStatusCode.Created, user)
         }
 
+        /**
+         * Delete specific user by its id
+         * */
         delete("{id}") {
-
+            val id = call.parameters["id"] ?: return@delete call.respond(HttpStatusCode.BadRequest)
+            if (userStorage.removeIf { it.id == id }) {
+                call.respondText("User removed correctly", status = HttpStatusCode.Accepted)
+            } else {
+                call.respondText("Not Found", status = HttpStatusCode.NotFound)
+            }
         }
     }
 }
