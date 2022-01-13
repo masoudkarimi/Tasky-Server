@@ -7,17 +7,28 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Route.userRouting() {
-    route("/user") {
+fun Route.taskRouting() {
+    route("/user/{userId}/tasks") {
         /**
-         * List all users
-         * */
+         * List all task for user with id [userId]
+         **/
         get {
-            if (userStorage.isNotEmpty()) {
-                call.respond(successResponse(UsersResponse(userStorage)))
-            } else {
-                call.respond(status = HttpStatusCode.NotFound, errorResponse("User not found"))
-            }
+            val userId = call.parameters["userId"] ?: return@get call.respond(
+                status = HttpStatusCode.BadRequest,
+                errorResponse("Field [userId] required")
+            )
+
+            userStorage.find { it.id == userId } ?: return@get call.respond(
+                status = HttpStatusCode.NotFound,
+                errorResponse("User not found")
+            )
+
+            val tasks = userTasks.filter { it.userId == userId }
+
+            call.respond(
+                HttpStatusCode.OK,
+                successResponse(TasksResponse(tasks))
+            )
         }
 
         /**
@@ -31,7 +42,7 @@ fun Route.userRouting() {
 
             val user = userStorage.find { it.id == id } ?: return@get call.respond(
                 status = HttpStatusCode.NotFound,
-                errorResponse("No user with id $id"),
+                errorResponse("No user with id $id")
             )
 
             call.respond(successResponse(user))
