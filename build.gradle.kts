@@ -1,6 +1,7 @@
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val kmongo_version: String by project
 
 plugins {
     application
@@ -37,6 +38,16 @@ dependencies {
      * we also have to apply the org.jetbrains.kotlin.plugin.serialization plugin.
      * */
     implementation( "io.ktor:ktor-serialization:$ktor_version")
+
+    /**
+     * KMongo is a community-created Kotlin framework that makes it easy to work with MongoDB
+     * from Kotlin/JVM code.
+     * If you use KotlinX serialization to serialize your objects to json (in order to transfer
+     * your data between frontend and backend), add the kmongo-id-serialization dependency and
+     * register the IdKotlinXSerializationModule module
+     * */
+    implementation("org.litote.kmongo:kmongo-coroutine-serialization:$kmongo_version")
+    implementation("org.litote.kmongo:kmongo-id-serialization:$kmongo_version")
 
     /**
      * allows us to test parts of our Ktor application without having to use the
