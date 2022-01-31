@@ -24,6 +24,10 @@ dependencies {
     // adds Ktor's core component to our project
     implementation("io.ktor:ktor-server-core:$ktor_version")
 
+    // Authentication dependencies
+    implementation("io.ktor:ktor-auth:$ktor_version")
+    implementation("io.ktor:ktor-auth-jwt:$ktor_version")
+
     // adds the Netty engine to our project, allowing us to use server functionality
     // without having to rely on an external application container
     implementation("io.ktor:ktor-server-netty:$ktor_version")

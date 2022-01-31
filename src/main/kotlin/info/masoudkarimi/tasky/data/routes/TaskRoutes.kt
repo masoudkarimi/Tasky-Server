@@ -12,7 +12,7 @@ import org.litote.kmongo.eq
 
 val tasksCollection = database.getCollection<Task>("tasks")
 
-fun Route.taskRouting() {
+fun Routing.taskRouting() {
     route("/user/{user_id}/tasks") {
         /**
          * List all task for user with id [user_id]
@@ -23,7 +23,7 @@ fun Route.taskRouting() {
                 errorResponse("Field [user_id] required")
             )
 
-            userCollection.findOne(User::_id eq userId) ?: return@get call.respond(
+            userCollection.findOne(UserDto::_id eq userId) ?: return@get call.respond(
                 status = HttpStatusCode.NotFound,
                 errorResponse("User not found")
             )
@@ -46,7 +46,7 @@ fun Route.taskRouting() {
             )
 
             val task = call.receive<Task>()
-            userCollection.findOne(User::_id eq userId) ?: return@post call.respond(
+            userCollection.findOne(UserDto::_id eq userId) ?: return@post call.respond(
                 status = HttpStatusCode.NotFound,
                 errorResponse("User not found")
             )
