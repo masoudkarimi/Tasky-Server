@@ -3,7 +3,7 @@ package info.masoudkarimi.tasky.data.routes
 import info.masoudkarimi.tasky.data.db.database
 import info.masoudkarimi.tasky.data.models.*
 import info.masoudkarimi.tasky.ext.isEmailValid
-import info.masoudkarimi.tasky.utils.Cipher
+import info.masoudkarimi.tasky.utils.BcryptHasher
 import info.masoudkarimi.tasky.utils.JwtProvider
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -14,7 +14,6 @@ import io.ktor.routing.*
 import org.litote.kmongo.and
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
-import java.util.*
 
 val userCollection = database.getCollection<UserDto>("users")
 
@@ -23,7 +22,6 @@ fun generateJwtToken(userEmail: String): String? {
 }
 
 fun Routing.userRouting() {
-    val base64Encoder = Base64.getEncoder()
     route("users") {
         /**
          * Create new user and return it as response
@@ -50,7 +48,7 @@ fun Routing.userRouting() {
                 firstName = userRequest.firstName,
                 lastName = userRequest.lastName,
                 email = userRequest.email,
-                password = String(base64Encoder.encode(Cipher.encrypt(userRequest.password))),
+                password = BcryptHasher.hashPassword(userRequest.password),
                 token = generateJwtToken(userRequest.email!!)
             )
 
@@ -92,13 +90,19 @@ fun Routing.userRouting() {
 
             val user = userCollection.findOne(
                 and(
-                    UserDto::email eq userRequest.email,
-                    UserDto::password eq String(base64Encoder.encode(Cipher.encrypt(userRequest.password)))
+                    UserDto::email eq userRequest.email
                 )
             ) ?: return@post call.respond(
                 status = HttpStatusCode.Unauthorized,
                 errorResponse("Email or password is invalid!")
             )
+
+            if (!BcryptHasher.checkPassword(userRequest.password, user)) {
+                return@post call.respond(
+                    status = HttpStatusCode.Unauthorized,
+                    errorResponse("Email or password is invalid!")
+                )
+            }
 
             val newToken = generateJwtToken(userRequest.email!!)
 

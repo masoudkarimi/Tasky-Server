@@ -28,6 +28,9 @@ dependencies {
     implementation("io.ktor:ktor-auth:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:$ktor_version")
 
+    //bcrypt for password hashing
+    implementation("org.mindrot:jbcrypt:0.4")
+
     // adds the Netty engine to our project, allowing us to use server functionality
     // without having to rely on an external application container
     implementation("io.ktor:ktor-server-netty:$ktor_version")
