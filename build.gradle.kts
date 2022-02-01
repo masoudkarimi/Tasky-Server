@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -14,6 +16,12 @@ group = "info.masoudkarimi.tasky"
 version = "0.0.1"
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
+}
+
+tasks.withType<KotlinCompile>().all {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 repositories {
