@@ -1,6 +1,6 @@
 package info.masoudkarimi.tasky.data.routes
 
-import info.masoudkarimi.tasky.data.db.database
+
 import info.masoudkarimi.tasky.data.models.*
 import info.masoudkarimi.tasky.ext.isEmailValid
 import info.masoudkarimi.tasky.utils.BcryptHasher
@@ -11,17 +11,21 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.koin.core.qualifier.named
+import org.koin.ktor.ext.inject
 import org.litote.kmongo.and
+import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 import org.litote.kmongo.setValue
 
-val userCollection = database.getCollection<UserDto>("users")
 
 fun generateJwtToken(userEmail: String): String? {
     return JwtProvider.createJWT(userEmail)
 }
 
 fun Routing.userRouting() {
+    val userCollection by inject<CoroutineCollection<UserDto>>(named("users"))
+
     route("users") {
         /**
          * Create new user and return it as response

@@ -8,6 +8,7 @@ import io.ktor.server.netty.*
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
+    configureDI()
     configureHTTP()
     configureSerialization()
     configAuthentication()
