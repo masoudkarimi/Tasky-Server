@@ -1,6 +1,7 @@
 package info.masoudkarimi.tasky.di
 
 
+import info.masoudkarimi.tasky.config.AppConfig
 import info.masoudkarimi.tasky.data.models.Task
 import info.masoudkarimi.tasky.data.models.UserDto
 import org.koin.core.qualifier.named
@@ -26,5 +27,9 @@ val appModule = module {
 
     single<CoroutineCollection<Task>>(named("tasks")) {
         get<CoroutineDatabase>().getCollection("tasks")
+    }
+
+    single {
+        AppConfig()
     }
 }

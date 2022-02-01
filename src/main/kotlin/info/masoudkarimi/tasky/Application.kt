@@ -9,6 +9,7 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
     configureDI()
+    setUpConfig()
     configureHTTP()
     configureSerialization()
     configAuthentication()
