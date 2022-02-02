@@ -1,1 +1,1 @@
-web: ./build/install/tasky/bin/tasky
+web: ./build/install/Tasky/bin/Tasky
