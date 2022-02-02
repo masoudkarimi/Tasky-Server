@@ -24,6 +24,10 @@ tasks.withType<KotlinCompile>().all {
     }
 }
 
+tasks.create("stage") {
+    dependsOn("installDist")
+}
+
 repositories {
     mavenCentral()
 }
