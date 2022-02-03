@@ -16,7 +16,7 @@ fun Application.configureDI() {
 
     install(Koin) {
         slf4jLogger(level = Level.ERROR)
-        modules(appModule)
+        modules(appModule(this@configureDI))
     }
 
     environment.monitor.subscribe(KoinApplicationStopPreparing) {
