@@ -20,7 +20,7 @@ fun appModule(application: Application) = module {
     }
 
     single {
-        get<CoroutineClient>().getDatabase("tasky")
+        get<CoroutineClient>().getDatabase("tasky-db")
     }
 
     single<CoroutineCollection<UserDto>>(named("users")) {
