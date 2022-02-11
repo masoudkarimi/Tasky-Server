@@ -4,7 +4,6 @@ package info.masoudkarimi.tasky.data.routes
 import info.masoudkarimi.tasky.data.models.*
 import info.masoudkarimi.tasky.ext.isEmailValid
 import info.masoudkarimi.tasky.plugins.USER
-import info.masoudkarimi.tasky.plugins.USERS
 import info.masoudkarimi.tasky.utils.BcryptHasher
 import info.masoudkarimi.tasky.utils.JwtProvider
 import io.ktor.application.*
@@ -28,7 +27,7 @@ fun generateJwtToken(userEmail: String): String? {
 fun Routing.userRouting() {
     val userCollection by inject<CoroutineCollection<UserDto>>(named("users"))
 
-    route(USERS) {
+    route("USERS") {
         /**
          * Create new user and return it as response
          * */

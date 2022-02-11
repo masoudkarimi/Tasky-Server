@@ -14,6 +14,5 @@ fun Application.module(testing: Boolean = false) {
     configureSerialization()
     configAuthentication()
     configureMonitoring()
-    configureExceptionHandler()
     configureRouting()
 }

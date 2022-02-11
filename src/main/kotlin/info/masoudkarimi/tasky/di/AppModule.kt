@@ -3,7 +3,6 @@ package info.masoudkarimi.tasky.di
 
 import info.masoudkarimi.tasky.config.AppConfig
 import info.masoudkarimi.tasky.data.models.Task
-import info.masoudkarimi.tasky.data.models.UserDto
 import io.ktor.application.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -23,9 +22,6 @@ fun appModule(application: Application) = module {
         get<CoroutineClient>().getDatabase("tasky-db")
     }
 
-    single<CoroutineCollection<UserDto>>(named("users")) {
-        get<CoroutineDatabase>().getCollection("users")
-    }
 
     single<CoroutineCollection<Task>>(named("tasks")) {
         get<CoroutineDatabase>().getCollection("tasks")

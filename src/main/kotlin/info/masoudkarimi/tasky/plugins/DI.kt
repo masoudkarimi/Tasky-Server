@@ -1,6 +1,7 @@
 package info.masoudkarimi.tasky.plugins
 
 import info.masoudkarimi.tasky.di.appModule
+import info.masoudkarimi.tasky.di.userModule
 import io.ktor.application.*
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.Koin
@@ -16,7 +17,10 @@ fun Application.configureDI() {
 
     install(Koin) {
         slf4jLogger(level = Level.ERROR)
-        modules(appModule(this@configureDI))
+        modules(
+            appModule(this@configureDI),
+            userModule(this@configureDI)
+        )
     }
 
     environment.monitor.subscribe(KoinApplicationStopPreparing) {
