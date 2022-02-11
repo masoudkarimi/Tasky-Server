@@ -1,11 +1,13 @@
 package info.masoudkarimi.tasky.features.user.exceptions
 
-object EmailInvalidExceptions : Exception()
+object EmailInvalidException : Exception()
 
-object EmailAlreadyRegisteredExceptions : Exception()
+object EmailOrPasswordInvalidException : Exception()
+
+object EmailAlreadyRegisteredException : Exception()
 
 object WeakPasswordException : Exception()
 
 class RequiredFieldMissedException(val fieldName: String) : Exception()
 
-class UserRegistrationGeneralException(message: String): Exception(message)
+class UserGeneralException(message: String): Exception(message)

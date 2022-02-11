@@ -6,5 +6,6 @@ import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
 
 interface UserDataSource {
     suspend fun saveUser(userRequestDTO: UserRequestDTO): UserDTO
-    suspend fun getUserByEmail(email: String) : UserDAO
+    suspend fun getUserByEmail(email: String) : UserDAO?
+    suspend fun updateUserTokenById(id: String, token: String): Boolean
 }

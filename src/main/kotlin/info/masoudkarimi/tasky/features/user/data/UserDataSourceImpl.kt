@@ -1,15 +1,17 @@
 package info.masoudkarimi.tasky.features.user.data
 
+import info.masoudkarimi.tasky.data.models.UserDto
 import info.masoudkarimi.tasky.data.routes.generateJwtToken
 import info.masoudkarimi.tasky.features.user.data.dao.UserDAO
 import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
-import info.masoudkarimi.tasky.features.user.exceptions.EmailAlreadyRegisteredExceptions
-import info.masoudkarimi.tasky.features.user.exceptions.UserRegistrationGeneralException
+import info.masoudkarimi.tasky.features.user.exceptions.EmailAlreadyRegisteredException
+import info.masoudkarimi.tasky.features.user.exceptions.UserGeneralException
 import info.masoudkarimi.tasky.utils.BcryptHasher
 
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
+import org.litote.kmongo.setValue
 
 class UserDataSourceImpl(
     private val userCollection: CoroutineCollection<UserDAO>
@@ -17,7 +19,7 @@ class UserDataSourceImpl(
 
     override suspend fun saveUser(userRequestDTO: UserRequestDTO): UserDTO {
         userCollection.findOne(UserDAO::email eq userRequestDTO.email)?.let {
-            throw EmailAlreadyRegisteredExceptions
+            throw EmailAlreadyRegisteredException
         }
 
         val userDAO = UserDAO(
@@ -29,11 +31,11 @@ class UserDataSourceImpl(
         )
 
         val insertedId = userCollection.insertOne(userDAO).insertedId ?: kotlin.run {
-            throw UserRegistrationGeneralException("Could not create user!")
+            throw UserGeneralException("Could not create user!")
         }
 
         val insertedUser = userCollection.findOne(UserDAO::_id eq insertedId.asString().value) ?: kotlin.run {
-            throw UserRegistrationGeneralException("Could not create user!")
+            throw UserGeneralException("Could not create user!")
         }
 
         return UserDTO(
@@ -44,7 +46,11 @@ class UserDataSourceImpl(
         )
     }
 
-    override suspend fun getUserByEmail(email: String): UserDAO {
-        TODO("Not yet implemented")
+    override suspend fun getUserByEmail(email: String): UserDAO? {
+        return userCollection.findOne(UserDto::email eq email)
+    }
+
+    override suspend fun updateUserTokenById(id: String , token: String): Boolean {
+        return userCollection.updateOne(UserDAO::_id eq id, setValue(UserDAO::token, token)).wasAcknowledged()
     }
 }

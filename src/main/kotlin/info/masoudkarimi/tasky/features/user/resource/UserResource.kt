@@ -24,14 +24,21 @@ fun Application.userRoutes() {
             )
         }
 
-        exception<EmailInvalidExceptions> {
+        exception<EmailInvalidException> {
             call.respond(
                 status = HttpStatusCode.BadRequest,
                 errorResponse("Email is invalid!")
             )
         }
 
-        exception<EmailAlreadyRegisteredExceptions> {
+        exception<EmailOrPasswordInvalidException> {
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                errorResponse("Email or password is invalid!")
+            )
+        }
+
+        exception<EmailAlreadyRegisteredException> {
             call.respond(
                 status = HttpStatusCode.Conflict,
                 errorResponse("Email already registered!")
@@ -46,7 +53,7 @@ fun Application.userRoutes() {
             )
         }
 
-        exception<UserRegistrationGeneralException> { cause ->
+        exception<UserGeneralException> { cause ->
             call.respond(
                 status = HttpStatusCode.InternalServerError,
                 errorResponse(cause.message ?: "Couldn't process the request")
@@ -74,6 +81,6 @@ fun Route.userLoginRoute() {
 
     post("$USER/auth/login") {
         val userRequest = call.receive<UserRequestDTO>()
-        call.respond(userRepository.login(userRequest))
+        call.respond(HttpStatusCode.OK, successResponse(userRepository.login(userRequest)))
     }
 }

@@ -1,6 +1,5 @@
 package info.masoudkarimi.tasky.utils
 
-import info.masoudkarimi.tasky.data.models.UserDto
 import org.mindrot.jbcrypt.BCrypt
 
 object BcryptHasher {
@@ -8,7 +7,7 @@ object BcryptHasher {
     /**
      * Check if the password matches the User's password
      */
-    fun checkPassword(attempt: String, user: UserDto) = BCrypt.checkpw(attempt, user.password)
+    fun checkPassword(attempt: String, current: String) = BCrypt.checkpw(attempt, current)
 
     /**
      * Returns the hashed version of the supplied password

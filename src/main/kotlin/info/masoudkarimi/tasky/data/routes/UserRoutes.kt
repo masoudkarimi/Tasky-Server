@@ -102,7 +102,7 @@ fun Routing.userRouting() {
                 errorResponse("Email or password is invalid!")
             )
 
-            if (!BcryptHasher.checkPassword(userRequest.password, user)) {
+            if (!BcryptHasher.checkPassword(userRequest.password, user.password ?: "")) {
                 return@post call.respond(
                     status = HttpStatusCode.Unauthorized,
                     errorResponse("Email or password is invalid!")
