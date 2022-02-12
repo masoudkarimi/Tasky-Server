@@ -1,13 +1,12 @@
 package info.masoudkarimi.tasky.features.user.data
 
-import info.masoudkarimi.tasky.data.models.UserDto
-import info.masoudkarimi.tasky.data.routes.generateJwtToken
 import info.masoudkarimi.tasky.features.user.data.dao.UserDAO
 import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
 import info.masoudkarimi.tasky.features.user.exceptions.EmailAlreadyRegisteredException
 import info.masoudkarimi.tasky.features.user.exceptions.UserGeneralException
 import info.masoudkarimi.tasky.utils.BcryptHasher
+import info.masoudkarimi.tasky.utils.JwtProvider
 
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
@@ -27,7 +26,7 @@ class UserDataSourceImpl(
             lastName = userRequestDTO.lastName,
             email = userRequestDTO.email,
             password = BcryptHasher.hashPassword(userRequestDTO.password!!),
-            token = generateJwtToken(userRequestDTO.email!!)
+            token = JwtProvider.createJWT(userRequestDTO.email!!)
         )
 
         val insertedId = userCollection.insertOne(userDAO).insertedId ?: kotlin.run {
@@ -47,10 +46,10 @@ class UserDataSourceImpl(
     }
 
     override suspend fun getUserByEmail(email: String): UserDAO? {
-        return userCollection.findOne(UserDto::email eq email)
+        return userCollection.findOne(UserDAO::email eq email)
     }
 
-    override suspend fun updateUserTokenById(id: String , token: String): Boolean {
+    override suspend fun updateUserTokenById(id: String, token: String): Boolean {
         return userCollection.updateOne(UserDAO::_id eq id, setValue(UserDAO::token, token)).wasAcknowledged()
     }
 }

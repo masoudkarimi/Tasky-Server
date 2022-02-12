@@ -1,5 +1,7 @@
 package info.masoudkarimi.tasky.features.user.exceptions
 
+object UnauthorizedException : Exception()
+
 object EmailInvalidException : Exception()
 
 object EmailOrPasswordInvalidException : Exception()

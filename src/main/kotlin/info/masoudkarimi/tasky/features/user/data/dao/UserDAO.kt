@@ -1,5 +1,6 @@
 package info.masoudkarimi.tasky.features.user.data.dao
 
+import io.ktor.auth.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
@@ -29,4 +30,4 @@ data class UserDAO(
      * */
     @SerialName("password")
     val password: String? = null,
-)
+): Principal

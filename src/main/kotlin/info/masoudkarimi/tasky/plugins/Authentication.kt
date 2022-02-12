@@ -1,19 +1,16 @@
 package info.masoudkarimi.tasky.plugins
 
 
-import info.masoudkarimi.tasky.data.models.UserDto
+import info.masoudkarimi.tasky.features.user.data.UserDataSource
 import info.masoudkarimi.tasky.utils.JwtProvider
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
-import org.koin.core.qualifier.named
 import org.koin.ktor.ext.inject
-import org.litote.kmongo.coroutine.CoroutineCollection
-import org.litote.kmongo.eq
 
 
 fun Application.configAuthentication() {
-    val userCollection by inject<CoroutineCollection<UserDto>>(named("users"))
+    val userDataSource by inject<UserDataSource>()
 
     install(Authentication) {
         jwt {
@@ -21,7 +18,7 @@ fun Application.configAuthentication() {
 
             validate { credential ->
                 if (credential.payload.audience.contains(JwtProvider.audience)) {
-                    userCollection.findOne(UserDto::email eq credential.payload.claims["email"]?.asString())
+                   userDataSource.getUserByEmail(credential.payload.claims["email"]?.asString() ?: return@validate null)
                 } else {
                     null
                 }

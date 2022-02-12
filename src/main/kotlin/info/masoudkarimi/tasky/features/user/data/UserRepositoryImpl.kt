@@ -1,12 +1,12 @@
 package info.masoudkarimi.tasky.features.user.data
 
-import info.masoudkarimi.tasky.data.routes.generateJwtToken
 import info.masoudkarimi.tasky.ext.isEmailValid
 import info.masoudkarimi.tasky.features.user.domain.UserRepository
 import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
 import info.masoudkarimi.tasky.features.user.exceptions.*
 import info.masoudkarimi.tasky.utils.BcryptHasher
+import info.masoudkarimi.tasky.utils.JwtProvider
 
 class UserRepositoryImpl(
     private val userDataSource: UserDataSource
@@ -53,7 +53,7 @@ class UserRepositoryImpl(
             throw EmailOrPasswordInvalidException
         }
 
-        val newToken = generateJwtToken(userRequest.email) ?: kotlin.run {
+        val newToken = JwtProvider.createJWT(userRequest.email) ?: kotlin.run {
             throw UserGeneralException("Something went wrong, try again later!")
         }
 
