@@ -19,7 +19,7 @@ fun Application.configureDI() {
         slf4jLogger(level = Level.ERROR)
         modules(
             appModule(this@configureDI),
-            userModule(this@configureDI)
+            userModule(),
         )
     }
 
