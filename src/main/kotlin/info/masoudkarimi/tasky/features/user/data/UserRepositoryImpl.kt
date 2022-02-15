@@ -2,9 +2,9 @@ package info.masoudkarimi.tasky.features.user.data
 
 import info.masoudkarimi.tasky.ext.isEmailValid
 import info.masoudkarimi.tasky.features.user.domain.UserRepository
-import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
 import info.masoudkarimi.tasky.exceptions.*
+import info.masoudkarimi.tasky.features.user.data.dao.UserDAO
 import info.masoudkarimi.tasky.utils.BcryptHasher
 import info.masoudkarimi.tasky.utils.JwtProvider
 
@@ -12,7 +12,7 @@ class UserRepositoryImpl(
     private val userDataSource: UserDataSource
 ) : UserRepository {
 
-    override suspend fun register(userRequest: UserRequestDTO): UserDTO {
+    override suspend fun register(userRequest: UserRequestDTO): UserDAO {
         if (userRequest.email.isNullOrEmpty()) {
             throw RequiredFieldMissedException("email")
         }
@@ -25,14 +25,14 @@ class UserRepositoryImpl(
             throw RequiredFieldMissedException("password")
         }
 
-        if (userRequest.password.length < 6 || !userRequest.password.matches("^[a-zA-Z0-9]*$".toRegex())) {
+        if (userRequest.password.length < 6) {
             throw WeakPasswordException
         }
 
         return userDataSource.saveUser(userRequest)
     }
 
-    override suspend fun login(userRequest: UserRequestDTO): UserDTO {
+    override suspend fun login(userRequest: UserRequestDTO): UserDAO {
         if (userRequest.email.isNullOrEmpty()) {
             throw RequiredFieldMissedException("email")
         }
@@ -63,7 +63,7 @@ class UserRepositoryImpl(
             throw UserGeneralException("Oops! Something wen wrong. Try later")
         }
 
-        return UserDTO(
+        return UserDAO(
             firstName = user.firstName,
             lastName = user.lastName,
             email = user.email,

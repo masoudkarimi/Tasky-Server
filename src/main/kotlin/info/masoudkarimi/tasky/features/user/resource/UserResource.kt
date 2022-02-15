@@ -2,8 +2,8 @@ package info.masoudkarimi.tasky.features.user.resource
 
 import info.masoudkarimi.tasky.data.models.successResponse
 import info.masoudkarimi.tasky.features.user.data.dao.UserDAO
+import info.masoudkarimi.tasky.features.user.data.dao.toUserDTO
 import info.masoudkarimi.tasky.features.user.domain.UserRepository
-import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
 import info.masoudkarimi.tasky.plugins.USER
 import io.ktor.application.*
@@ -28,7 +28,7 @@ fun Route.userRegisterRoute() {
 
     post("$USER/auth/register") {
         val userRequest = call.receive<UserRequestDTO>()
-        call.respond(HttpStatusCode.Created, successResponse(userRepository.register(userRequest)))
+        call.respond(HttpStatusCode.Created, successResponse(userRepository.register(userRequest).toUserDTO()))
     }
 }
 
@@ -37,7 +37,7 @@ fun Route.userLoginRoute() {
 
     post("$USER/auth/login") {
         val userRequest = call.receive<UserRequestDTO>()
-        call.respond(HttpStatusCode.OK, successResponse(userRepository.login(userRequest)))
+        call.respond(HttpStatusCode.OK, successResponse(userRepository.login(userRequest).toUserDTO()))
     }
 }
 
@@ -50,13 +50,7 @@ fun Route.getUserInfoRoute() {
 
             return@get call.respond(
                 status = HttpStatusCode.OK,
-                successResponse(
-                    UserDTO(
-                        firstName = user.firstName,
-                        lastName = user.lastName,
-                        email = user.email,
-                    )
-                )
+                successResponse(user.toUserDTO())
             )
         }
     }

@@ -1,5 +1,6 @@
 package info.masoudkarimi.tasky.features.user.data.dao
 
+import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import io.ktor.auth.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -30,4 +31,11 @@ data class UserDAO(
      * */
     @SerialName("password")
     val password: String? = null,
-): Principal
+) : Principal
+
+fun UserDAO.toUserDTO() = UserDTO(
+    firstName = firstName,
+    lastName = lastName,
+    email = email,
+    token = token,
+)
