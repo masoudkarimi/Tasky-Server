@@ -3,8 +3,8 @@ package info.masoudkarimi.tasky.features.user.data
 import info.masoudkarimi.tasky.features.user.data.dao.UserDAO
 import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
-import info.masoudkarimi.tasky.features.user.exceptions.EmailAlreadyRegisteredException
-import info.masoudkarimi.tasky.features.user.exceptions.UserGeneralException
+import info.masoudkarimi.tasky.exceptions.EmailAlreadyRegisteredException
+import info.masoudkarimi.tasky.exceptions.UserGeneralException
 import info.masoudkarimi.tasky.utils.BcryptHasher
 import info.masoudkarimi.tasky.utils.JwtProvider
 

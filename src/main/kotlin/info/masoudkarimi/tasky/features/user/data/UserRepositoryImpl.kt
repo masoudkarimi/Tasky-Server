@@ -4,7 +4,7 @@ import info.masoudkarimi.tasky.ext.isEmailValid
 import info.masoudkarimi.tasky.features.user.domain.UserRepository
 import info.masoudkarimi.tasky.features.user.domain.model.UserDTO
 import info.masoudkarimi.tasky.features.user.domain.model.UserRequestDTO
-import info.masoudkarimi.tasky.features.user.exceptions.*
+import info.masoudkarimi.tasky.exceptions.*
 import info.masoudkarimi.tasky.utils.BcryptHasher
 import info.masoudkarimi.tasky.utils.JwtProvider
 

@@ -1,4 +1,4 @@
-package info.masoudkarimi.tasky.features.user.exceptions
+package info.masoudkarimi.tasky.exceptions
 
 object UnauthorizedException : Exception()
 
