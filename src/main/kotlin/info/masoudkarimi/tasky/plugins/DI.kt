@@ -1,6 +1,7 @@
 package info.masoudkarimi.tasky.plugins
 
 import info.masoudkarimi.tasky.di.appModule
+import info.masoudkarimi.tasky.di.taskModule
 import info.masoudkarimi.tasky.di.userModule
 import io.ktor.application.*
 import org.koin.core.logger.Level
@@ -20,6 +21,7 @@ fun Application.configureDI() {
         modules(
             appModule(this@configureDI),
             userModule(),
+            taskModule()
         )
     }
 

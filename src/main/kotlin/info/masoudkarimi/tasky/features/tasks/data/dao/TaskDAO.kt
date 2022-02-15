@@ -1,17 +1,13 @@
-package info.masoudkarimi.tasky.data.models
+package info.masoudkarimi.tasky.features.tasks.data.dao
 
+import info.masoudkarimi.tasky.features.tasks.domain.model.TaskDTO
+import io.ktor.auth.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bson.codecs.pojo.annotations.BsonId
 
 @Serializable
-data class TasksResponse(
-    @SerialName("tasks")
-    val tasks: List<Task>
-)
-
-@Serializable
-data class Task(
+data class TaskDAO(
     @BsonId
     @SerialName("_id")
     val _id: String? = null,
@@ -24,5 +20,10 @@ data class Task(
     val title: String,
 
     @SerialName("description")
-    val description: String,
+    val description: String?,
+) : Principal
+
+fun TaskDAO.toTaskDTO() = TaskDTO(
+    title = title,
+    description = description,
 )

@@ -2,8 +2,8 @@ package info.masoudkarimi.tasky.plugins
 
 import info.masoudkarimi.tasky.data.models.errorResponse
 import info.masoudkarimi.tasky.data.routes.rootRouting
-import info.masoudkarimi.tasky.data.routes.taskRouting
 import info.masoudkarimi.tasky.exceptions.*
+import info.masoudkarimi.tasky.features.tasks.resource.taskRoutes
 import info.masoudkarimi.tasky.features.user.resource.userRoutes
 import io.ktor.application.*
 import io.ktor.features.*
@@ -79,9 +79,9 @@ fun Application.configureRouting() {
     }
 
     userRoutes()
+    taskRoutes()
 
     routing {
         rootRouting()
-        taskRouting()
     }
 }
